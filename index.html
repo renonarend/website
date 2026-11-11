@@ -1,546 +1,455 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VWORLD - Minecraft Server</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        brand: {
-                            gold: '#d4af37',
-                            goldDark: '#b89628',
-                            bg: '#0f0f10',
-                            card: '#161618',
-                            cardHover: '#1f1f22',
-                            border: '#2a2a2e',
-                            textMuted: '#9aa0a6'
-                        }
-                    },
                     fontFamily: {
-                        serif: ['Georgia', 'serif'],
-                        sans: ['Inter', 'sans-serif']
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #0c0c0e;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
-        .serif-title {
-            font-family: 'Georgia', serif;
+        /* Custom Scrollbar untuk Sidebar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
+<body class="min-h-screen flex flex-col md:flex-row selection:bg-emerald-200 selection:text-emerald-900">
 
-    <!-- NAVBAR -->
-    <nav class="border-b border-brand-border/40 bg-black/40 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <!-- Logo -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="showTab('home')">
-                <div class="w-8 h-8 rounded-lg border border-brand-gold/60 flex items-center justify-center font-bold text-brand-gold text-lg">
+    <!-- MOBILE HEADER (Hanya muncul di HP) -->
+    <header class="md:hidden flex items-center justify-between px-4 h-16 bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center text-base shadow-md shadow-emerald-500/20">
+                V
+            </div>
+            <span class="font-extrabold text-lg tracking-tight text-slate-900">VWORLD</span>
+        </div>
+        <button onclick="toggleMobileMenu()" class="p-2 text-slate-600 hover:text-slate-900 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- SIDEBAR (Desktop & Mobile Drawer) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col justify-between">
+        <div class="p-6 space-y-8">
+            <!-- Logo Desktop -->
+            <div class="hidden md:flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center text-lg shadow-md shadow-emerald-500/20">
                     V
                 </div>
-                <span class="font-bold tracking-wider text-white text-lg">VWORLD</span>
+                <span class="font-extrabold text-xl tracking-tight text-slate-900">VWORLD</span>
             </div>
 
-            <!-- Navigation Links -->
-            <div class="flex items-center gap-8 text-sm font-medium">
-                <button id="nav-home" onclick="showTab('home')" class="hover:text-white transition-colors text-brand-gold">Home</button>
-                <button id="nav-leaderboard" onclick="showTab('leaderboard')" class="hover:text-white transition-colors text-brand-textMuted">Leaderboard</button>
-                <button id="nav-ranks" onclick="showTab('ranks')" class="hover:text-white transition-colors text-brand-textMuted">Ranks</button>
-                <button id="nav-community" onclick="showTab('community')" class="hover:text-white transition-colors text-brand-textMuted">Community</button>
-                <a href="https://discord.gg" target="_blank" class="bg-brand-gold hover:bg-brand-goldDark text-black font-semibold px-4 py-2 rounded-lg transition-colors">
-                    Discord
+            <!-- Sidebar Menu Links -->
+            <nav class="space-y-1.5 font-semibold text-sm">
+                <a href="#about" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                    🏠 Home & Info
                 </a>
-            </div>
+                <a href="#leaderboard" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                    🏆 Scoreboard
+                </a>
+                <a href="#ranks" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                    👑 Ranks & Tiers
+                </a>
+                <a href="#community" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                    💬 Komunitas
+                </a>
+            </nav>
         </div>
-    </nav>
+
+        <!-- Sidebar Footer / Discord CTA -->
+        <div class="p-6 border-t border-slate-100">
+            <a href="https://discord.gg" target="_blank" class="flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-4 py-3 rounded-xl transition-all shadow-sm">
+                Gabung Discord
+            </a>
+        </div>
+    </aside>
+
+    <!-- OVERLAY MOBILE MENU -->
+    <div id="overlay" onclick="closeMobileMenu()" class="fixed inset-0 bg-black/20 z-45 hidden md:hidden backdrop-blur-xs"></div>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-6xl mx-auto px-6 py-12 flex-grow w-full">
+    <div class="flex-1 md:ml-64 flex flex-col justify-between min-h-screen">
+        
+        <main class="space-y-16 pb-20">
 
-        <!-- ================= HOME SECTION ================= -->
-        <section id="sec-home" class="space-y-12">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[420px]">
-                <!-- Hero Left -->
-                <div class="lg:col-span-7 space-y-6">
-                    <span class="text-xs font-semibold tracking-wider text-brand-gold uppercase">
-                        SURVIVAL ECONOMY - JAVA & BEDROCK
-                    </span>
-                    <h1 class="text-5xl md:text-6xl font-normal serif-title leading-tight">
-                        Your world, <br />
-                        <span class="italic">your story.</span>
-                    </h1>
-                    <p class="text-brand-textMuted text-base">
-                        Survival economy tanpa reset season. Java & Bedrock crossplay.
-                    </p>
-                    <div class="flex items-center gap-4 pt-2">
-                        <button onclick="copyIP('vworldmc.mc-world.xyz')" class="bg-brand-gold hover:bg-brand-goldDark text-black font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors">
+            <!-- 1. HERO / HOME SECTION -->
+            <section id="about" class="pt-12 sm:pt-16 px-4 sm:px-10 max-w-5xl mx-auto text-center space-y-6">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 text-emerald-800 text-xs font-bold border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Survival Economy Java & Bedrock
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-3xl mx-auto">
+                    Main Survival Seru Tanpa Batas di <span class="text-emerald-600">VWORLD</span>
+                </h1>
+                
+                <p class="text-slate-600 text-base sm:text-lg max-w-xl mx-auto font-normal">
+                    Server survival economy tanpa reset season! Main bareng temen dari Java maupun HP (Bedrock) kapan saja.
+                </p>
+
+                <!-- IP Card Box -->
+                <div class="max-w-md mx-auto bg-white p-4 sm:p-5 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
+                        <span>IP Server</span>
+                        <span id="player-count" class="text-emerald-600 font-semibold">12 Players Online</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                        <span class="font-mono text-xs sm:text-sm font-bold text-slate-800 flex-1 text-left truncate px-2">vworldmc.mc-world.xyz</span>
+                        <button onclick="copyIP('vworldmc.mc-world.xyz')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
                             Salin IP
                         </button>
-                        <a href="https://discord.gg" target="_blank" class="border border-brand-border hover:bg-brand-card text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-colors">
-                            Gabung Discord
-                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. SCOREBOARD / LEADERBOARD SECTION (Scroll ke bawah) -->
+            <section id="leaderboard" class="px-4 sm:px-10 max-w-5xl mx-auto w-full space-y-6 pt-6">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Papan Peringkat</span>
+                        <h2 class="text-3xl font-extrabold text-slate-900">Scoreboard</h2>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex gap-2 overflow-x-auto py-1">
+                        <button onclick="switchLb('richest')" id="btn-richest" class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 shrink-0">
+                            💰 Richest
+                        </button>
+                        <button onclick="switchLb('kills')" id="btn-kills" class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0">
+                            ⚔️ Top Kills
+                        </button>
+                        <button onclick="switchLb('playtime')" id="btn-playtime" class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0">
+                            ⏱️ Playtime
+                        </button>
                     </div>
                 </div>
 
-                <!-- Server Info Card Right -->
-                <div class="lg:col-span-5">
-                    <div class="bg-brand-card border border-brand-border/60 rounded-2xl p-6 space-y-6 shadow-xl">
-                        <div class="flex items-center justify-between border-b border-brand-border/40 pb-4">
-                            <div class="flex gap-4 text-sm font-medium">
-                                <span class="text-white border-b-2 border-brand-gold pb-1 cursor-pointer">Java</span>
-                                <span class="text-brand-textMuted cursor-pointer hover:text-white">Bedrock</span>
+                <!-- Table Container -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <!-- Richest Table -->
+                    <div id="table-richest" class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                                <tr>
+                                    <th class="p-4 w-12 text-center">#</th>
+                                    <th class="p-4">PLAYER</th>
+                                    <th class="p-4">CLAN</th>
+                                    <th class="p-4">WEALTH</th>
+                                    <th class="p-4 text-right">RANK</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="p-4 text-center font-extrabold text-amber-500">1</td>
+                                    <td class="p-4 font-bold text-slate-900">BimoRaung</td>
+                                    <td class="p-4 text-slate-400 font-semibold">KOPI</td>
+                                    <td class="p-4 font-mono font-bold text-emerald-600">$48.200.000</td>
+                                    <td class="p-4 text-right"><span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded">KING</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="p-4 text-center font-extrabold text-slate-400">2</td>
+                                    <td class="p-4 font-bold text-slate-900">SenjaKala</td>
+                                    <td class="p-4 text-slate-400 font-semibold">NUSA</td>
+                                    <td class="p-4 font-mono font-bold text-emerald-600">$43.100.000</td>
+                                    <td class="p-4 text-right"><span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded">KING</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="p-4 text-center font-extrabold text-amber-700">3</td>
+                                    <td class="p-4 font-bold text-slate-900">ArkaWijaya</td>
+                                    <td class="p-4 text-slate-400 font-semibold">AXIS</td>
+                                    <td class="p-4 font-mono font-bold text-emerald-600">$38.600.000</td>
+                                    <td class="p-4 text-right"><span class="bg-purple-100 text-purple-800 text-[10px] font-extrabold px-2 py-0.5 rounded">BARON</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Kills Table -->
+                    <div id="table-kills" class="hidden overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                                <tr>
+                                    <th class="p-4 w-12 text-center">#</th>
+                                    <th class="p-4">PLAYER</th>
+                                    <th class="p-4">CLAN</th>
+                                    <th class="p-4">TOTAL KILLS</th>
+                                    <th class="p-4 text-right">RANK</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="p-4 text-center font-extrabold text-amber-500">1</td>
+                                    <td class="p-4 font-bold text-slate-900">ArkaWijaya</td>
+                                    <td class="p-4 text-slate-400 font-semibold">AXIS</td>
+                                    <td class="p-4 font-mono font-bold text-red-500">1,420 Kills</td>
+                                    <td class="p-4 text-right"><span class="bg-purple-100 text-purple-800 text-[10px] font-extrabold px-2 py-0.5 rounded">BARON</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="p-4 text-center font-extrabold text-slate-400">2</td>
+                                    <td class="p-4 font-bold text-slate-900">BimoRaung</td>
+                                    <td class="p-4 text-slate-400 font-semibold">KOPI</td>
+                                    <td class="p-4 font-mono font-bold text-red-500">1,150 Kills</td>
+                                    <td class="p-4 text-right"><span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded">KING</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Playtime Table -->
+                    <div id="table-playtime" class="hidden overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                                <tr>
+                                    <th class="p-4 w-12 text-center">#</th>
+                                    <th class="p-4">PLAYER</th>
+                                    <th class="p-4">CLAN</th>
+                                    <th class="p-4">PLAYTIME</th>
+                                    <th class="p-4 text-right">RANK</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="p-4 text-center font-extrabold text-amber-500">1</td>
+                                    <td class="p-4 font-bold text-slate-900">SenjaKala</td>
+                                    <td class="p-4 text-slate-400 font-semibold">NUSA</td>
+                                    <td class="p-4 font-mono font-bold text-blue-600">342 jam 15 min</td>
+                                    <td class="p-4 text-right"><span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded">KING</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. RANKS SECTION (Scroll kebawah setelah scoreboard) -->
+            <section id="ranks" class="px-4 sm:px-10 max-w-5xl mx-auto w-full space-y-6 pt-6">
+                <div>
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Harga & Benefit</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900">Ranks & Tiers</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Member -->
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-md">FREE</span>
+                                <span class="text-xl">🌱</span>
                             </div>
-                            <span class="text-xs text-brand-textMuted">1.21+ | 26.0+</span>
-                        </div>
-
-                        <div>
-                            <div class="text-xs text-brand-textMuted mb-1">IP SERVER</div>
-                            <div class="text-sm font-mono text-white bg-black/40 p-3 rounded-lg border border-brand-border/40 flex justify-between items-center">
-                                <span>vworldmc.mc-world.xyz</span>
-                                <button onclick="copyIP('vworldmc.mc-world.xyz')" class="text-xs bg-brand-gold text-black font-semibold px-2.5 py-1 rounded hover:bg-brand-goldDark">
-                                    Salin IP
-                                </button>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Member</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Fitur awal pemain baru.</p>
+                            </div>
+                            <div class="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                                <div class="flex justify-between"><span>Sethome:</span><b class="text-slate-900">2</b></div>
+                                <div class="flex justify-between"><span>Claim Land:</span><b class="text-slate-900">3</b></div>
+                                <div class="flex justify-between"><span>Max Block:</span><b class="text-slate-900">30.000</b></div>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 text-[11px] text-slate-500 space-y-1">
+                                <span class="font-bold text-slate-700">Commands:</span>
+                                <div class="font-mono bg-slate-50 p-2 rounded border border-slate-200 font-semibold text-slate-700">/back /tpa /nv</div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="flex items-center justify-between text-xs text-brand-textMuted pt-2">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span>Online · <strong class="text-white font-normal">12 players</strong></span>
+                    <!-- Scout -->
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-pink-600 bg-pink-100 px-2.5 py-1 rounded-md">Rp25.000</span>
+                                <span class="text-xl">🗡️</span>
                             </div>
-                            <span>TPS <strong class="text-white font-normal">20.0</strong></span>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Scout</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Untuk penjelajah aktif.</p>
+                            </div>
+                            <div class="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                                <div class="flex justify-between"><span>Sethome:</span><b class="text-slate-900">4</b></div>
+                                <div class="flex justify-between"><span>Claim Land:</span><b class="text-slate-900">5</b></div>
+                                <div class="flex justify-between"><span>Max Block:</span><b class="text-slate-900">50.000</b></div>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 text-[11px] text-slate-500 space-y-1">
+                                <span class="font-bold text-slate-700">Commands:</span>
+                                <div class="font-mono bg-slate-50 p-2 rounded border border-slate-200 font-semibold text-slate-700 flex flex-wrap gap-1">
+                                    <span>/back</span> <span>/tpa</span> <span>/nv</span> <span>/time</span> <span>/weather</span> <span>/craft</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Knight -->
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2.5 py-1 rounded-md">Rp50.000</span>
+                                <span class="text-xl">⚔️</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Knight</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Fitur ksatria tangguh.</p>
+                            </div>
+                            <div class="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                                <div class="flex justify-between"><span>Sethome:</span><b class="text-slate-900">6</b></div>
+                                <div class="flex justify-between"><span>Claim Land:</span><b class="text-slate-900">8</b></div>
+                                <div class="flex justify-between"><span>Max Block:</span><b class="text-slate-900">80.000</b></div>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 text-[11px] text-slate-500 space-y-1">
+                                <span class="font-bold text-slate-700">Commands:</span>
+                                <div class="font-mono bg-slate-50 p-2 rounded border border-slate-200 font-semibold text-slate-700 flex flex-wrap gap-1">
+                                    <span>+ /enderchest</span> <span>/tp</span> <span>/feed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Baron -->
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2.5 py-1 rounded-md">Rp75.000</span>
+                                <span class="text-xl">🛡️</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Baron</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Keuntungan kenyamanan tinggi.</p>
+                            </div>
+                            <div class="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                                <div class="flex justify-between"><span>Sethome:</span><b class="text-slate-900">8</b></div>
+                                <div class="flex justify-between"><span>Claim Land:</span><b class="text-slate-900">10</b></div>
+                                <div class="flex justify-between"><span>Max Block:</span><b class="text-slate-900">120.000</b></div>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 text-[11px] text-slate-500 space-y-1">
+                                <span class="font-bold text-slate-700">Commands:</span>
+                                <div class="font-mono bg-slate-50 p-2 rounded border border-slate-200 font-semibold text-slate-700 flex flex-wrap gap-1">
+                                    <span>+ /repair</span> <span>/anvil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- King -->
+                    <div class="bg-gradient-to-b from-amber-50 to-white rounded-2xl p-5 border-2 border-amber-400 flex flex-col justify-between space-y-6 shadow-md relative overflow-hidden md:col-span-2 lg:col-span-2">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-amber-900 bg-amber-300 px-2.5 py-1 rounded-md">Rp100.000</span>
+                                <span class="text-xl">👑</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-amber-950">King</h3>
+                                <p class="text-xs text-amber-700 mt-0.5">Kekuasaan tanpa batas.</p>
+                            </div>
+                            <div class="space-y-1.5 text-xs text-slate-700 border-t border-amber-200 pt-3">
+                                <div class="flex justify-between"><span>Sethome:</span><b class="text-slate-900">10</b></div>
+                                <div class="flex justify-between"><span>Claim Land:</span><b class="text-slate-900">15</b></div>
+                                <div class="flex justify-between"><span>Max Block:</span><b class="text-slate-900">200.000</b></div>
+                            </div>
+                            <div class="border-t border-amber-200 pt-3 text-[11px] text-slate-600 space-y-1">
+                                <span class="font-bold text-amber-900">Commands:</span>
+                                <div class="font-mono bg-amber-100/60 p-2 rounded border border-amber-200 font-bold text-amber-900 flex flex-wrap gap-1">
+                                    <span>+ /heal</span> <span>/fly</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Features Bar -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 border-t border-brand-border/40">
-                <div class="flex items-center gap-3 bg-brand-card/40 p-4 rounded-xl border border-brand-border/30">
-                    <span class="text-2xl">🪙</span>
-                    <span class="text-sm font-medium">Economy</span>
+            <!-- 4. COMMUNITY / INFO SECTION -->
+            <section id="community" class="px-4 sm:px-10 max-w-5xl mx-auto w-full space-y-6 pt-6">
+                <div>
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Detail Server</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900">Komunitas & Info</h2>
                 </div>
-                <div class="flex items-center gap-3 bg-brand-card/40 p-4 rounded-xl border border-brand-border/30">
-                    <span class="text-2xl">🗺️</span>
-                    <span class="text-sm font-medium">Land Claim</span>
-                </div>
-                <div class="flex items-center gap-3 bg-brand-card/40 p-4 rounded-xl border border-brand-border/30">
-                    <span class="text-2xl">📦</span>
-                    <span class="text-sm font-medium">Keep Inventory</span>
-                </div>
-                <div class="flex items-center gap-3 bg-brand-card/40 p-4 rounded-xl border border-brand-border/30">
-                    <span class="text-2xl">🎮</span>
-                    <span class="text-sm font-medium">Crossplay</span>
-                </div>
-            </div>
-        </section>
 
-        <!-- ================= LEADERBOARD SECTION ================= -->
-        <section id="sec-leaderboard" class="hidden space-y-6">
-            <div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xl">🏆</span>
-                    <h1 class="text-4xl serif-title font-normal">Leaderboard</h1>
-                </div>
-                <p class="text-brand-textMuted text-sm mt-1">Papan peringkat pemain terbaik di VWORLD.</p>
-            </div>
-
-            <!-- Sub Tabs for Leaderboard -->
-            <div class="flex gap-3 border-b border-brand-border/40 pb-3 text-sm">
-                <button id="lb-tab-richest" onclick="switchLbTab('richest')" class="bg-brand-gold text-black font-semibold px-4 py-1.5 rounded-lg transition-colors">
-                    💰 Richest
-                </button>
-                <button id="lb-tab-kills" onclick="switchLbTab('kills')" class="text-brand-textMuted hover:text-white px-4 py-1.5 rounded-lg transition-colors">
-                    ⚔️ Kills
-                </button>
-                <button id="lb-tab-playtime" onclick="switchLbTab('playtime')" class="text-brand-textMuted hover:text-white px-4 py-1.5 rounded-lg transition-colors">
-                    ⏱️ Playtime
-                </button>
-            </div>
-
-            <!-- Table Richest -->
-            <div id="lb-table-richest" class="overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
-                <table class="w-full text-left text-sm">
-                    <thead class="text-xs text-brand-textMuted border-b border-brand-border/60 uppercase">
-                        <tr>
-                            <th class="p-4 w-12">#</th>
-                            <th class="p-4">PLAYER</th>
-                            <th class="p-4">CLAN</th>
-                            <th class="p-4">TOTAL WEALTH</th>
-                            <th class="p-4 text-right">RANK</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-brand-border/30 text-white">
-                        <tr>
-                            <td class="p-4 font-bold text-brand-gold">1</td>
-                            <td class="p-4 font-semibold">BimoRaung</td>
-                            <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono text-emerald-400 font-bold">$48.200.000</td>
-                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-gray-300">2</td>
-                            <td class="p-4 font-semibold">SenjaKala</td>
-                            <td class="p-4 text-brand-textMuted">NUSA</td>
-                            <td class="p-4 font-mono text-emerald-400 font-bold">$43.100.000</td>
-                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-amber-600">3</td>
-                            <td class="p-4 font-semibold">ArkaWijaya</td>
-                            <td class="p-4 text-brand-textMuted">AXIS</td>
-                            <td class="p-4 font-mono text-emerald-400 font-bold">$38.600.000</td>
-                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-brand-textMuted">4</td>
-                            <td class="p-4 font-semibold">LarasMaya</td>
-                            <td class="p-4 text-brand-textMuted">TANAH</td>
-                            <td class="p-4 font-mono text-emerald-400 font-bold">$34.200.000</td>
-                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-brand-textMuted">5</td>
-                            <td class="p-4 font-semibold">BayuSelatan</td>
-                            <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono text-emerald-400 font-bold">$29.800.000</td>
-                            <td class="p-4 text-right"><span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KNIGHT</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Table Kills -->
-            <div id="lb-table-kills" class="hidden overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
-                <table class="w-full text-left text-sm">
-                    <thead class="text-xs text-brand-textMuted border-b border-brand-border/60 uppercase">
-                        <tr>
-                            <th class="p-4 w-12">#</th>
-                            <th class="p-4">PLAYER</th>
-                            <th class="p-4">CLAN</th>
-                            <th class="p-4">TOTAL KILLS</th>
-                            <th class="p-4 text-right">RANK</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-brand-border/30 text-white">
-                        <tr>
-                            <td class="p-4 font-bold text-brand-gold">1</td>
-                            <td class="p-4 font-semibold">ArkaWijaya</td>
-                            <td class="p-4 text-brand-textMuted">AXIS</td>
-                            <td class="p-4 font-mono text-red-400 font-bold">1,420 Kills</td>
-                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-gray-300">2</td>
-                            <td class="p-4 font-semibold">BimoRaung</td>
-                            <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono text-red-400 font-bold">1,150 Kills</td>
-                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-amber-600">3</td>
-                            <td class="p-4 font-semibold">BayuSelatan</td>
-                            <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono text-red-400 font-bold">980 Kills</td>
-                            <td class="p-4 text-right"><span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KNIGHT</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-brand-textMuted">4</td>
-                            <td class="p-4 font-semibold">SenjaKala</td>
-                            <td class="p-4 text-brand-textMuted">NUSA</td>
-                            <td class="p-4 font-mono text-red-400 font-bold">740 Kills</td>
-                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-brand-textMuted">5</td>
-                            <td class="p-4 font-semibold">LarasMaya</td>
-                            <td class="p-4 text-brand-textMuted">TANAH</td>
-                            <td class="p-4 font-mono text-red-400 font-bold">512 Kills</td>
-                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Table Playtime -->
-            <div id="lb-table-playtime" class="hidden overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
-                <table class="w-full text-left text-sm">
-                    <thead class="text-xs text-brand-textMuted border-b border-brand-border/60 uppercase">
-                        <tr>
-                            <th class="p-4 w-12">#</th>
-                            <th class="p-4">PLAYER</th>
-                            <th class="p-4">CLAN</th>
-                            <th class="p-4">PLAYTIME</th>
-                            <th class="p-4 text-right">RANK</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-brand-border/30 text-white">
-                        <tr>
-                            <td class="p-4 font-bold text-brand-gold">1</td>
-                            <td class="p-4 font-semibold">SenjaKala</td>
-                            <td class="p-4 text-brand-textMuted">NUSA</td>
-                            <td class="p-4 font-mono text-cyan-400 font-bold">342 jam 15 min</td>
-                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-gray-300">2</td>
-                            <td class="p-4 font-semibold">BimoRaung</td>
-                            <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono text-cyan-400 font-bold">298 jam 40 min</td>
-                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-amber-600">3</td>
-                            <td class="p-4 font-semibold">LarasMaya</td>
-                            <td class="p-4 text-brand-textMuted">TANAH</td>
-                            <td class="p-4 font-mono text-cyan-400 font-bold">215 jam 05 min</td>
-                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-brand-textMuted">4</td>
-                            <td class="p-4 font-semibold">ArkaWijaya</td>
-                            <td class="p-4 text-brand-textMuted">AXIS</td>
-                            <td class="p-4 font-mono text-cyan-400 font-bold">189 jam 50 min</td>
-                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 font-bold text-brand-textMuted">5</td>
-                            <td class="p-4 font-semibold">BayuSelatan</td>
-                            <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono text-cyan-400 font-bold">142 jam 20 min</td>
-                            <td class="p-4 text-right"><span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KNIGHT</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- ================= RANKS SECTION ================= -->
-        <section id="sec-ranks" class="hidden space-y-6">
-            <div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xl">👑</span>
-                    <h1 class="text-4xl serif-title font-normal">Ranks</h1>
-                </div>
-                <p class="text-brand-textMuted text-sm mt-1">Harga dan benefit tiap tier.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                <!-- Member -->
-                <div class="bg-brand-card border border-brand-border/60 rounded-2xl p-5 flex flex-col justify-between space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2">
-                            <span>🌱</span>
-                            <h3 class="font-bold text-emerald-400">MEMBER</h3>
-                        </div>
-                        <div class="text-2xl font-bold">FREE</div>
-                        <p class="text-xs text-brand-textMuted">Fitur dasar untuk mulai main.</p>
-                        <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>2</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>3</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>30.000</span></div>
-                        </div>
-                        <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
-                            <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv</div>
-                        </div>
+                <div class="bg-white rounded-2xl border border-slate-200 divide-y divide-slate-100 shadow-sm text-sm">
+                    <div class="p-4 sm:p-5 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Java IP</span>
+                        <span class="font-mono font-bold text-slate-900">vworldmc.mc-world.xyz</span>
                     </div>
-                    <button class="w-full bg-brand-border/40 hover:bg-brand-border text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">Pilih Member</button>
-                </div>
-
-                <!-- Scout -->
-                <div class="bg-brand-card border border-brand-border/60 rounded-2xl p-5 flex flex-col justify-between space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2">
-                            <span>🗡️</span>
-                            <h3 class="font-bold text-pink-400">SCOUT</h3>
-                        </div>
-                        <div class="text-2xl font-bold">Rp25.000</div>
-                        <p class="text-xs text-brand-textMuted">Untuk penjelajah sejati.</p>
-                        <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>4</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>5</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>50.000</span></div>
-                        </div>
-                        <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
-                            <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft</div>
-                        </div>
+                    <div class="p-4 sm:p-5 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Bedrock IP</span>
+                        <span class="font-mono font-bold text-slate-900">vworldmc.mc-world.xyz</span>
                     </div>
-                    <button class="w-full bg-brand-border/40 hover:bg-brand-border text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">Pilih Scout</button>
-                </div>
-
-                <!-- Knight -->
-                <div class="bg-brand-card border border-brand-border/60 rounded-2xl p-5 flex flex-col justify-between space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2">
-                            <span>⚔️</span>
-                            <h3 class="font-bold text-blue-400">KNIGHT</h3>
-                        </div>
-                        <div class="text-2xl font-bold">Rp50.000</div>
-                        <p class="text-xs text-brand-textMuted">Ksatria tangguh petualang.</p>
-                        <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>6</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>8</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>80.000</span></div>
-                        </div>
-                        <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
-                            <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft /enderchest /tp /feed</div>
-                        </div>
+                    <div class="p-4 sm:p-5 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Bedrock Port</span>
+                        <span class="font-mono font-bold text-slate-900">19173</span>
                     </div>
-                    <button class="w-full bg-brand-border/40 hover:bg-brand-border text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">Pilih Knight</button>
-                </div>
-
-                <!-- Baron -->
-                <div class="bg-brand-card border border-brand-border/60 rounded-2xl p-5 flex flex-col justify-between space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2">
-                            <span>🛡️</span>
-                            <h3 class="font-bold text-purple-400">BARON</h3>
-                        </div>
-                        <div class="text-2xl font-bold">Rp75.000</div>
-                        <p class="text-xs text-brand-textMuted">Akses bangsawan kenyamanan tinggi.</p>
-                        <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>8</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>10</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>120.000</span></div>
-                        </div>
-                        <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
-                            <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft /enderchest /tp /feed /repair /anvil</div>
-                        </div>
+                    <div class="p-4 sm:p-5 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Versi Game</span>
+                        <span class="font-semibold text-slate-800">1.21+ | 26.0+</span>
                     </div>
-                    <button class="w-full bg-brand-border/40 hover:bg-brand-border text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">Pilih Baron</button>
-                </div>
-
-                <!-- King -->
-                <div class="bg-brand-card border border-brand-gold/60 rounded-2xl p-5 flex flex-col justify-between space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2">
-                            <span>👑</span>
-                            <h3 class="font-bold text-brand-gold">KING</h3>
-                        </div>
-                        <div class="text-2xl font-bold text-brand-gold">Rp100.000</div>
-                        <p class="text-xs text-brand-textMuted">Kekuasaan tertinggi tanpa batas.</p>
-                        <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>10</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>15</span></div>
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>200.000</span></div>
-                        </div>
-                        <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
-                            <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft /enderchest /tp /feed /repair /anvil /heal /fly</div>
-                        </div>
-                    </div>
-                    <button class="w-full bg-brand-gold hover:bg-brand-goldDark text-black text-xs font-bold py-2.5 rounded-lg transition-colors">Pilih King</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= COMMUNITY SECTION ================= -->
-        <section id="sec-community" class="hidden space-y-8">
-            <div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xl">💬</span>
-                    <h1 class="text-4xl serif-title font-normal">Community</h1>
-                </div>
-                <p class="text-brand-textMuted text-sm mt-1">Server info, cara mulai, dan FAQ.</p>
-            </div>
-
-            <div class="space-y-4">
-                <h2 class="text-xl font-bold serif-title">Server info</h2>
-                <div class="bg-brand-card border border-brand-border/60 rounded-xl p-6 divide-y divide-brand-border/30 text-sm">
-                    <div class="py-3 flex justify-between items-center">
-                        <span class="text-brand-textMuted">Java IP</span>
-                        <span class="font-mono font-semibold">vworldmc.mc-world.xyz</span>
-                    </div>
-                    <div class="py-3 flex justify-between items-center">
-                        <span class="text-brand-textMuted">Bedrock IP</span>
-                        <span class="font-mono font-semibold">vworldmc.mc-world.xyz</span>
-                    </div>
-                    <div class="py-3 flex justify-between items-center">
-                        <span class="text-brand-textMuted">Port</span>
-                        <span class="font-mono font-semibold">19173</span>
-                    </div>
-                    <div class="py-3 flex justify-between items-center">
-                        <span class="text-brand-textMuted">Version</span>
-                        <span class="font-semibold">1.21+ | 26.0+</span>
-                    </div>
-                    <div class="py-3 flex justify-between items-center">
-                        <span class="text-brand-textMuted">Software</span>
-                        <span class="font-semibold">Paper</span>
-                    </div>
-                    <div class="py-3 flex justify-between items-center">
-                        <span class="text-brand-textMuted">Uptime</span>
-                        <span class="font-semibold text-emerald-400">98%</span>
+                    <div class="p-4 sm:p-5 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Uptime Server</span>
+                        <span class="font-bold text-emerald-600">98% Online</span>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-    </main>
+        </main>
 
-    <!-- FOOTER -->
-    <footer class="border-t border-brand-border/40 py-6 bg-black/20 text-center text-xs text-brand-textMuted">
-        &copy; 2026 VWORLD Minecraft Server. All rights reserved.
-    </footer>
+        <!-- FOOTER -->
+        <footer class="py-6 border-t border-slate-200 bg-white text-center text-xs text-slate-400">
+            &copy; 2026 VWORLD Minecraft Server. All rights reserved.
+        </footer>
+    </div>
 
-    <!-- JAVASCRIPT FOR TABS -->
+    <!-- JAVASCRIPT -->
     <script>
-        function showTab(tabName) {
-            document.getElementById('sec-home').classList.add('hidden');
-            document.getElementById('sec-leaderboard').classList.add('hidden');
-            document.getElementById('sec-ranks').classList.add('hidden');
-            document.getElementById('sec-community').classList.add('hidden');
-
-            const navIds = ['nav-home', 'nav-leaderboard', 'nav-ranks', 'nav-community'];
-            navIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.classList.remove('text-brand-gold');
-                    el.classList.add('text-brand-textMuted');
-                }
-            });
-
-            document.getElementById('sec-' + tabName).classList.remove('hidden');
-            const activeNav = document.getElementById('nav-' + tabName);
-            if (activeNav) {
-                activeNav.classList.remove('text-brand-textMuted');
-                activeNav.classList.add('text-brand-gold');
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
         }
 
-        function switchLbTab(type) {
-            const types = ['richest', 'kills', 'playtime'];
-            types.forEach(t => {
-                document.getElementById('lb-table-' + t).classList.add('hidden');
-                const btn = document.getElementById('lb-tab-' + t);
-                btn.className = "text-brand-textMuted hover:text-white px-4 py-1.5 rounded-lg transition-colors";
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        function switchLb(type) {
+            ['richest', 'kills', 'playtime'].forEach(t => {
+                document.getElementById('table-' + t).classList.add('hidden');
+                const btn = document.getElementById('btn-' + t);
+                btn.className = "bg-white border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0";
             });
 
-            document.getElementById('lb-table-' + type).classList.remove('hidden');
-            const activeBtn = document.getElementById('lb-tab-' + type);
-            activeBtn.className = "bg-brand-gold text-black font-semibold px-4 py-1.5 rounded-lg transition-colors";
+            document.getElementById('table-' + type).classList.remove('hidden');
+            document.getElementById('btn-' + type).className = "bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 shrink-0";
         }
 
         function copyIP(ip) {
             navigator.clipboard.writeText(ip);
-            alert('IP Server berhasil disalin: ' + ip);
+            alert('IP Server berhasil disalin!');
         }
     </script>
 </body>
