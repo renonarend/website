@@ -97,7 +97,6 @@
                 <!-- Server Info Card Right -->
                 <div class="lg:col-span-5">
                     <div class="bg-brand-card border border-brand-border/60 rounded-2xl p-6 space-y-6 shadow-xl">
-                        <!-- Tabs inside card -->
                         <div class="flex items-center justify-between border-b border-brand-border/40 pb-4">
                             <div class="flex gap-4 text-sm font-medium">
                                 <span class="text-white border-b-2 border-brand-gold pb-1 cursor-pointer">Java</span>
@@ -146,68 +145,6 @@
                     <span class="text-sm font-medium">Crossplay</span>
                 </div>
             </div>
-
-            <!-- Summary Rank Table -->
-            <div class="pt-8 space-y-4">
-                <div class="flex justify-between items-end">
-                    <div>
-                        <span class="text-xs text-brand-gold font-mono">01 👑</span>
-                        <h2 class="text-3xl serif-title font-normal">Ranks</h2>
-                    </div>
-                    <button onclick="showTab('ranks')" class="text-xs text-brand-gold hover:underline">Semua rank &rarr;</button>
-                </div>
-
-                <div class="overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
-                    <table class="w-full text-left text-sm">
-                        <thead class="text-xs text-brand-textMuted border-b border-brand-border/60 uppercase">
-                            <tr>
-                                <th class="p-4">TIER</th>
-                                <th class="p-4">PRICE</th>
-                                <th class="p-4">HOMES</th>
-                                <th class="p-4">CLAIM LAND</th>
-                                <th class="p-4">MAX BLOCK</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-brand-border/30 text-white">
-                            <tr>
-                                <td class="p-4 font-semibold">Member</td>
-                                <td class="p-4">Gratis</td>
-                                <td class="p-4">2</td>
-                                <td class="p-4">3</td>
-                                <td class="p-4">30.000</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-semibold text-emerald-400">Scout</td>
-                                <td class="p-4">Rp25.000</td>
-                                <td class="p-4">4</td>
-                                <td class="p-4">5</td>
-                                <td class="p-4">50.000</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-semibold text-blue-400">Knight</td>
-                                <td class="p-4">Rp50.000</td>
-                                <td class="p-4">6</td>
-                                <td class="p-4">8</td>
-                                <td class="p-4">80.000</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-semibold text-purple-400">Baron</td>
-                                <td class="p-4">Rp75.000</td>
-                                <td class="p-4">8</td>
-                                <td class="p-4">10</td>
-                                <td class="p-4">120.000</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-semibold text-brand-gold">King</td>
-                                <td class="p-4">Rp100.000</td>
-                                <td class="p-4">10</td>
-                                <td class="p-4">15</td>
-                                <td class="p-4">200.000</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </section>
 
         <!-- ================= LEADERBOARD SECTION ================= -->
@@ -217,73 +154,172 @@
                     <span class="text-xl">🏆</span>
                     <h1 class="text-4xl serif-title font-normal">Leaderboard</h1>
                 </div>
-                <p class="text-brand-textMuted text-sm mt-1">Data ilustratif untuk preview.</p>
+                <p class="text-brand-textMuted text-sm mt-1">Papan peringkat pemain terbaik di VWORLD.</p>
             </div>
 
-            <!-- Sub Tabs -->
-            <div class="flex gap-4 border-b border-brand-border/40 pb-3 text-sm">
-                <button class="bg-brand-gold/10 text-brand-gold px-3 py-1 rounded-md font-medium border border-brand-gold/20">Wealth</button>
-                <button class="text-brand-textMuted hover:text-white px-3 py-1">Playtime</button>
-                <button class="text-brand-textMuted hover:text-white px-3 py-1">Land</button>
-                <button class="text-brand-textMuted hover:text-white px-3 py-1">Kills</button>
+            <!-- Sub Tabs for Leaderboard -->
+            <div class="flex gap-3 border-b border-brand-border/40 pb-3 text-sm">
+                <button id="lb-tab-richest" onclick="switchLbTab('richest')" class="bg-brand-gold text-black font-semibold px-4 py-1.5 rounded-lg transition-colors">
+                    💰 Richest
+                </button>
+                <button id="lb-tab-kills" onclick="switchLbTab('kills')" class="text-brand-textMuted hover:text-white px-4 py-1.5 rounded-lg transition-colors">
+                    ⚔️ Kills
+                </button>
+                <button id="lb-tab-playtime" onclick="switchLbTab('playtime')" class="text-brand-textMuted hover:text-white px-4 py-1.5 rounded-lg transition-colors">
+                    ⏱️ Playtime
+                </button>
             </div>
 
-            <!-- Table -->
-            <div class="overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
+            <!-- Table Richest -->
+            <div id="lb-table-richest" class="overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
                 <table class="w-full text-left text-sm">
                     <thead class="text-xs text-brand-textMuted border-b border-brand-border/60 uppercase">
                         <tr>
                             <th class="p-4 w-12">#</th>
                             <th class="p-4">PLAYER</th>
                             <th class="p-4">CLAN</th>
-                            <th class="p-4">WEALTH</th>
-                            <th class="p-4 text-right">TIER</th>
+                            <th class="p-4">TOTAL WEALTH</th>
+                            <th class="p-4 text-right">RANK</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-brand-border/30 text-white">
                         <tr>
                             <td class="p-4 font-bold text-brand-gold">1</td>
-                            <td class="p-4 font-semibold flex items-center gap-2">
-                                <span class="w-4 h-4 bg-yellow-500 inline-block rounded-sm"></span> BimoRaung
-                            </td>
+                            <td class="p-4 font-semibold">BimoRaung</td>
                             <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono">$48.200.000</td>
+                            <td class="p-4 font-mono text-emerald-400 font-bold">$48.200.000</td>
                             <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
                         </tr>
                         <tr>
                             <td class="p-4 font-bold text-gray-300">2</td>
-                            <td class="p-4 font-semibold flex items-center gap-2">
-                                <span class="w-4 h-4 bg-cyan-500 inline-block rounded-sm"></span> SenjaKala
-                            </td>
+                            <td class="p-4 font-semibold">SenjaKala</td>
                             <td class="p-4 text-brand-textMuted">NUSA</td>
-                            <td class="p-4 font-mono">$43.100.000</td>
+                            <td class="p-4 font-mono text-emerald-400 font-bold">$43.100.000</td>
                             <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
                         </tr>
                         <tr>
                             <td class="p-4 font-bold text-amber-600">3</td>
-                            <td class="p-4 font-semibold flex items-center gap-2">
-                                <span class="w-4 h-4 bg-emerald-500 inline-block rounded-sm"></span> ArkaWijaya
-                            </td>
+                            <td class="p-4 font-semibold">ArkaWijaya</td>
                             <td class="p-4 text-brand-textMuted">AXIS</td>
-                            <td class="p-4 font-mono">$38.600.000</td>
+                            <td class="p-4 font-mono text-emerald-400 font-bold">$38.600.000</td>
                             <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
                         </tr>
                         <tr>
                             <td class="p-4 font-bold text-brand-textMuted">4</td>
-                            <td class="p-4 font-semibold flex items-center gap-2">
-                                LarasMaya
-                            </td>
+                            <td class="p-4 font-semibold">LarasMaya</td>
                             <td class="p-4 text-brand-textMuted">TANAH</td>
-                            <td class="p-4 font-mono">$34.200.000</td>
+                            <td class="p-4 font-mono text-emerald-400 font-bold">$34.200.000</td>
                             <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
                         </tr>
                         <tr>
                             <td class="p-4 font-bold text-brand-textMuted">5</td>
-                            <td class="p-4 font-semibold flex items-center gap-2">
-                                BayuSelatan
-                            </td>
+                            <td class="p-4 font-semibold">BayuSelatan</td>
                             <td class="p-4 text-brand-textMuted">KOPI</td>
-                            <td class="p-4 font-mono">$29.800.000</td>
+                            <td class="p-4 font-mono text-emerald-400 font-bold">$29.800.000</td>
+                            <td class="p-4 text-right"><span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KNIGHT</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Kills -->
+            <div id="lb-table-kills" class="hidden overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs text-brand-textMuted border-b border-brand-border/60 uppercase">
+                        <tr>
+                            <th class="p-4 w-12">#</th>
+                            <th class="p-4">PLAYER</th>
+                            <th class="p-4">CLAN</th>
+                            <th class="p-4">TOTAL KILLS</th>
+                            <th class="p-4 text-right">RANK</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-brand-border/30 text-white">
+                        <tr>
+                            <td class="p-4 font-bold text-brand-gold">1</td>
+                            <td class="p-4 font-semibold">ArkaWijaya</td>
+                            <td class="p-4 text-brand-textMuted">AXIS</td>
+                            <td class="p-4 font-mono text-red-400 font-bold">1,420 Kills</td>
+                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-gray-300">2</td>
+                            <td class="p-4 font-semibold">BimoRaung</td>
+                            <td class="p-4 text-brand-textMuted">KOPI</td>
+                            <td class="p-4 font-mono text-red-400 font-bold">1,150 Kills</td>
+                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-amber-600">3</td>
+                            <td class="p-4 font-semibold">BayuSelatan</td>
+                            <td class="p-4 text-brand-textMuted">KOPI</td>
+                            <td class="p-4 font-mono text-red-400 font-bold">980 Kills</td>
+                            <td class="p-4 text-right"><span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KNIGHT</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-brand-textMuted">4</td>
+                            <td class="p-4 font-semibold">SenjaKala</td>
+                            <td class="p-4 text-brand-textMuted">NUSA</td>
+                            <td class="p-4 font-mono text-red-400 font-bold">740 Kills</td>
+                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-brand-textMuted">5</td>
+                            <td class="p-4 font-semibold">LarasMaya</td>
+                            <td class="p-4 text-brand-textMuted">TANAH</td>
+                            <td class="p-4 font-mono text-red-400 font-bold">512 Kills</td>
+                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Playtime -->
+            <div id="lb-table-playtime" class="hidden overflow-x-auto bg-brand-card border border-brand-border/60 rounded-xl">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs text-brand-textMuted border-b border-brand-border/60 uppercase">
+                        <tr>
+                            <th class="p-4 w-12">#</th>
+                            <th class="p-4">PLAYER</th>
+                            <th class="p-4">CLAN</th>
+                            <th class="p-4">PLAYTIME</th>
+                            <th class="p-4 text-right">RANK</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-brand-border/30 text-white">
+                        <tr>
+                            <td class="p-4 font-bold text-brand-gold">1</td>
+                            <td class="p-4 font-semibold">SenjaKala</td>
+                            <td class="p-4 text-brand-textMuted">NUSA</td>
+                            <td class="p-4 font-mono text-cyan-400 font-bold">342 jam 15 min</td>
+                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-gray-300">2</td>
+                            <td class="p-4 font-semibold">BimoRaung</td>
+                            <td class="p-4 text-brand-textMuted">KOPI</td>
+                            <td class="p-4 font-mono text-cyan-400 font-bold">298 jam 40 min</td>
+                            <td class="p-4 text-right"><span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KING</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-amber-600">3</td>
+                            <td class="p-4 font-semibold">LarasMaya</td>
+                            <td class="p-4 text-brand-textMuted">TANAH</td>
+                            <td class="p-4 font-mono text-cyan-400 font-bold">215 jam 05 min</td>
+                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-brand-textMuted">4</td>
+                            <td class="p-4 font-semibold">ArkaWijaya</td>
+                            <td class="p-4 text-brand-textMuted">AXIS</td>
+                            <td class="p-4 font-mono text-cyan-400 font-bold">189 jam 50 min</td>
+                            <td class="p-4 text-right"><span class="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">BARON</span></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-brand-textMuted">5</td>
+                            <td class="p-4 font-semibold">BayuSelatan</td>
+                            <td class="p-4 text-brand-textMuted">KOPI</td>
+                            <td class="p-4 font-mono text-cyan-400 font-bold">142 jam 20 min</td>
                             <td class="p-4 text-right"><span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs px-2 py-0.5 rounded font-bold uppercase">KNIGHT</span></td>
                         </tr>
                     </tbody>
@@ -301,19 +337,18 @@
                 <p class="text-brand-textMuted text-sm mt-1">Harga dan benefit tiap tier.</p>
             </div>
 
-            <!-- Rank Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <!-- Member -->
                 <div class="bg-brand-card border border-brand-border/60 rounded-2xl p-5 flex flex-col justify-between space-y-6">
                     <div class="space-y-4">
                         <div class="flex items-center gap-2">
                             <span>🌱</span>
-                            <h3 class="font-bold text-white">Member</h3>
+                            <h3 class="font-bold text-emerald-400">MEMBER</h3>
                         </div>
-                        <div class="text-2xl font-bold">Gratis</div>
+                        <div class="text-2xl font-bold">FREE</div>
                         <p class="text-xs text-brand-textMuted">Fitur dasar untuk mulai main.</p>
                         <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Homes</span><span>2</span></div>
+                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>2</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>3</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>30.000</span></div>
                         </div>
@@ -330,18 +365,18 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-2">
                             <span>🗡️</span>
-                            <h3 class="font-bold text-emerald-400">Scout</h3>
+                            <h3 class="font-bold text-pink-400">SCOUT</h3>
                         </div>
                         <div class="text-2xl font-bold">Rp25.000</div>
-                        <p class="text-xs text-brand-textMuted">Untuk pemain yang sering explore.</p>
+                        <p class="text-xs text-brand-textMuted">Untuk penjelajah sejati.</p>
                         <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Homes</span><span>4</span></div>
+                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>4</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>5</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>50.000</span></div>
                         </div>
                         <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
                             <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/time /weather /craft</div>
+                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft</div>
                         </div>
                     </div>
                     <button class="w-full bg-brand-border/40 hover:bg-brand-border text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">Pilih Scout</button>
@@ -352,18 +387,18 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-2">
                             <span>⚔️</span>
-                            <h3 class="font-bold text-blue-400">Knight</h3>
+                            <h3 class="font-bold text-blue-400">KNIGHT</h3>
                         </div>
                         <div class="text-2xl font-bold">Rp50.000</div>
-                        <p class="text-xs text-brand-textMuted">Homes lebih banyak, tambah /enderchest.</p>
+                        <p class="text-xs text-brand-textMuted">Ksatria tangguh petualang.</p>
                         <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Homes</span><span>6</span></div>
+                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>6</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>8</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>80.000</span></div>
                         </div>
                         <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
                             <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/enderchest /tp /feed</div>
+                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft /enderchest /tp /feed</div>
                         </div>
                     </div>
                     <button class="w-full bg-brand-border/40 hover:bg-brand-border text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">Pilih Knight</button>
@@ -374,40 +409,40 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-2">
                             <span>🛡️</span>
-                            <h3 class="font-bold text-purple-400">Baron</h3>
+                            <h3 class="font-bold text-purple-400">BARON</h3>
                         </div>
                         <div class="text-2xl font-bold">Rp75.000</div>
-                        <p class="text-xs text-brand-textMuted">Tambah /repair dan /anvil.</p>
+                        <p class="text-xs text-brand-textMuted">Akses bangsawan kenyamanan tinggi.</p>
                         <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Homes</span><span>8</span></div>
+                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>8</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>10</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>120.000</span></div>
                         </div>
                         <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
                             <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/repair /anvil</div>
+                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft /enderchest /tp /feed /repair /anvil</div>
                         </div>
                     </div>
                     <button class="w-full bg-brand-border/40 hover:bg-brand-border text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">Pilih Baron</button>
                 </div>
 
                 <!-- King -->
-                <div class="bg-brand-card border border-brand-gold/60 rounded-2xl p-5 flex flex-col justify-between space-y-6 relative overflow-hidden">
+                <div class="bg-brand-card border border-brand-gold/60 rounded-2xl p-5 flex flex-col justify-between space-y-6">
                     <div class="space-y-4">
                         <div class="flex items-center gap-2">
                             <span>👑</span>
-                            <h3 class="font-bold text-brand-gold">King</h3>
+                            <h3 class="font-bold text-brand-gold">KING</h3>
                         </div>
                         <div class="text-2xl font-bold text-brand-gold">Rp100.000</div>
-                        <p class="text-xs text-brand-textMuted">Semua command termasuk /heal dan /fly.</p>
+                        <p class="text-xs text-brand-textMuted">Kekuasaan tertinggi tanpa batas.</p>
                         <div class="space-y-2 pt-2 border-t border-brand-border/40 text-xs">
-                            <div class="flex justify-between"><span class="text-brand-textMuted">Homes</span><span>10</span></div>
+                            <div class="flex justify-between"><span class="text-brand-textMuted">Sethome</span><span>10</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Claim land</span><span>15</span></div>
                             <div class="flex justify-between"><span class="text-brand-textMuted">Max block</span><span>200.000</span></div>
                         </div>
                         <div class="pt-2 border-t border-brand-border/40 text-xs space-y-1">
                             <div class="text-brand-textMuted">Commands:</div>
-                            <div class="font-mono text-[11px] text-gray-300">/heal /fly</div>
+                            <div class="font-mono text-[11px] text-gray-300">/back /tpa /nv /time /weather /craft /enderchest /tp /feed /repair /anvil /heal /fly</div>
                         </div>
                     </div>
                     <button class="w-full bg-brand-gold hover:bg-brand-goldDark text-black text-xs font-bold py-2.5 rounded-lg transition-colors">Pilih King</button>
@@ -463,16 +498,14 @@
         &copy; 2026 VWORLD Minecraft Server. All rights reserved.
     </footer>
 
-    <!-- JAVASCRIPT FOR TABS & FUNCTIONALITY -->
+    <!-- JAVASCRIPT FOR TABS -->
     <script>
         function showTab(tabName) {
-            // Hide all sections
             document.getElementById('sec-home').classList.add('hidden');
             document.getElementById('sec-leaderboard').classList.add('hidden');
             document.getElementById('sec-ranks').classList.add('hidden');
             document.getElementById('sec-community').classList.add('hidden');
 
-            // Reset Nav Styles
             const navIds = ['nav-home', 'nav-leaderboard', 'nav-ranks', 'nav-community'];
             navIds.forEach(id => {
                 const el = document.getElementById(id);
@@ -482,7 +515,6 @@
                 }
             });
 
-            // Show active section & highlight active nav
             document.getElementById('sec-' + tabName).classList.remove('hidden');
             const activeNav = document.getElementById('nav-' + tabName);
             if (activeNav) {
@@ -490,8 +522,20 @@
                 activeNav.classList.add('text-brand-gold');
             }
 
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchLbTab(type) {
+            const types = ['richest', 'kills', 'playtime'];
+            types.forEach(t => {
+                document.getElementById('lb-table-' + t).classList.add('hidden');
+                const btn = document.getElementById('lb-tab-' + t);
+                btn.className = "text-brand-textMuted hover:text-white px-4 py-1.5 rounded-lg transition-colors";
+            });
+
+            document.getElementById('lb-table-' + type).classList.remove('hidden');
+            const activeBtn = document.getElementById('lb-tab-' + type);
+            activeBtn.className = "bg-brand-gold text-black font-semibold px-4 py-1.5 rounded-lg transition-colors";
         }
 
         function copyIP(ip) {
