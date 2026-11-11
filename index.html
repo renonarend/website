@@ -23,7 +23,6 @@
             background-color: #f8fafc;
             color: #0f172a;
         }
-        /* Desain Background Glow Estetik Tipis */
         .aesthetic-bg {
             background-image: 
                 radial-gradient(at 10% 20%, rgba(16, 185, 129, 0.07) 0px, transparent 50%),
@@ -119,12 +118,26 @@
                 <!-- IP & Port Card Box -->
                 <div class="max-w-md mx-auto bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-4 text-left relative overflow-hidden">
                     <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-blue-500 to-amber-400"></div>
-                    <div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
-                        <span>Server Connection</span>
-                        <span id="player-count" class="text-emerald-600 font-semibold">12 Players Online</span>
+                    <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider px-1 border-b border-slate-100 pb-3">
+                        <span class="text-slate-400">Server Connection</span>
+                        <div id="server-status-badge" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 text-[11px]">
+                            <span id="status-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                            <span id="server-status-text">Memuat Status...</span>
+                        </div>
                     </div>
                     
                     <div class="space-y-3">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Status</span>
+                                <span id="status-live" class="font-bold text-xs sm:text-sm text-slate-700">-</span>
+                            </div>
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Players Online</span>
+                                <span id="player-count" class="font-bold text-xs sm:text-sm text-emerald-600">-</span>
+                            </div>
+                        </div>
+
                         <div>
                             <span class="text-[11px] font-bold text-slate-500 uppercase">IP Server (Java & Bedrock)</span>
                             <div class="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 mt-1">
@@ -452,6 +465,51 @@
             navigator.clipboard.writeText(text);
             alert(message);
         }
+
+        function updateServerStatus() {
+            const serverIP = 'vworldmc.mc-world.xyz';
+            const serverPort = '19173';
+            
+            fetch(`https://api.mcsrvstat.us/3/${serverIP}:${serverPort}`)
+                .then(response => response.json())
+                .then(data => {
+                    const serverStatusText = document.getElementById('server-status-text');
+                    const statusLive = document.getElementById('status-live');
+                    const playerCount = document.getElementById('player-count');
+                    const statusDot = document.getElementById('status-dot');
+                    const badge = document.getElementById('server-status-badge');
+                    
+                    if (data.online) {
+                        serverStatusText.innerText = "Online";
+                        statusLive.innerText = "🟢 Online";
+                        statusLive.className = "font-bold text-xs sm:text-sm text-emerald-600";
+                        
+                        playerCount.innerText = `${data.players.online} / ${data.players.max}`;
+                        
+                        statusDot.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+                        badge.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-semibold border border-emerald-200";
+                    } else {
+                        serverStatusText.innerText = "Offline";
+                        statusLive.innerText = "🔴 Offline";
+                        statusLive.className = "font-bold text-xs sm:text-sm text-red-500";
+                        
+                        playerCount.innerText = "0 Player";
+                        
+                        statusDot.className = "w-2 h-2 rounded-full bg-red-500";
+                        badge.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-[11px] font-semibold border border-red-200";
+                    }
+                })
+                .catch(error => {
+                    console.error('Gagal mengambil data server:', error);
+                    document.getElementById('server-status-text').innerText = "Error";
+                    document.getElementById('status-live').innerText = "⚠️ Gangguan";
+                    document.getElementById('player-count').innerText = "-";
+                    document.getElementById('status-dot').className = "w-2 h-2 rounded-full bg-amber-500";
+                });
+        }
+
+        updateServerStatus();
+        setInterval(updateServerStatus, 60000);
     </script>
 </body>
 </html>
