@@ -23,7 +23,6 @@
             background-color: #f8fafc;
             color: #0f172a;
         }
-        /* Custom Scrollbar untuk Sidebar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -39,7 +38,7 @@
 </head>
 <body class="min-h-screen flex flex-col md:flex-row selection:bg-emerald-200 selection:text-emerald-900">
 
-    <!-- MOBILE HEADER (Hanya muncul di HP) -->
+    <!-- MOBILE HEADER -->
     <header class="md:hidden flex items-center justify-between px-4 h-16 bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="flex items-center gap-2.5">
             <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center text-base shadow-md shadow-emerald-500/20">
@@ -54,10 +53,9 @@
         </button>
     </header>
 
-    <!-- SIDEBAR (Desktop & Mobile Drawer) -->
+    <!-- SIDEBAR -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col justify-between">
         <div class="p-6 space-y-8">
-            <!-- Logo Desktop -->
             <div class="hidden md:flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center text-lg shadow-md shadow-emerald-500/20">
                     V
@@ -65,7 +63,6 @@
                 <span class="font-extrabold text-xl tracking-tight text-slate-900">VWORLD</span>
             </div>
 
-            <!-- Sidebar Menu Links -->
             <nav class="space-y-1.5 font-semibold text-sm">
                 <a href="#about" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
                     🏠 Home & Info
@@ -82,7 +79,6 @@
             </nav>
         </div>
 
-        <!-- Sidebar Footer / Discord CTA -->
         <div class="p-6 border-t border-slate-100">
             <a href="https://discord.gg" target="_blank" class="flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-4 py-3 rounded-xl transition-all shadow-sm">
                 Gabung Discord
@@ -90,15 +86,15 @@
         </div>
     </aside>
 
-    <!-- OVERLAY MOBILE MENU -->
+    <!-- OVERLAY MOBILE -->
     <div id="overlay" onclick="closeMobileMenu()" class="fixed inset-0 bg-black/20 z-45 hidden md:hidden backdrop-blur-xs"></div>
 
-    <!-- MAIN CONTENT CONTAINER -->
+    <!-- MAIN CONTENT -->
     <div class="flex-1 md:ml-64 flex flex-col justify-between min-h-screen">
         
         <main class="space-y-16 pb-20">
 
-            <!-- 1. HERO / HOME SECTION -->
+            <!-- 1. HERO / HOME & INFO SECTION -->
             <section id="about" class="pt-12 sm:pt-16 px-4 sm:px-10 max-w-5xl mx-auto text-center space-y-6">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 text-emerald-800 text-xs font-bold border border-emerald-200">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -113,23 +109,38 @@
                     Server survival economy tanpa reset season! Main bareng temen dari Java maupun HP (Bedrock) kapan saja.
                 </p>
 
-                <!-- IP Card Box -->
-                <div class="max-w-md mx-auto bg-white p-4 sm:p-5 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-3">
+                <!-- IP & Port Card Box -->
+                <div class="max-w-md mx-auto bg-white p-5 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-4 text-left">
                     <div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
-                        <span>IP Server</span>
+                        <span>Server Connection</span>
                         <span id="player-count" class="text-emerald-600 font-semibold">12 Players Online</span>
                     </div>
                     
-                    <div class="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                        <span class="font-mono text-xs sm:text-sm font-bold text-slate-800 flex-1 text-left truncate px-2">vworldmc.mc-world.xyz</span>
-                        <button onclick="copyIP('vworldmc.mc-world.xyz')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
-                            Salin IP
-                        </button>
+                    <div class="space-y-3">
+                        <div>
+                            <span class="text-[11px] font-bold text-slate-500 uppercase">IP Server (Java & Bedrock)</span>
+                            <div class="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 mt-1">
+                                <span class="font-mono text-xs sm:text-sm font-bold text-slate-800 flex-1 truncate px-1">vworldmc.mc-world.xyz</span>
+                                <button onclick="copyText('vworldmc.mc-world.xyz', 'IP Berhasil disalin!')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all shadow-sm">
+                                    Salin IP
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="text-[11px] font-bold text-slate-500 uppercase">Port (Khusus Bedrock/MCPE)</span>
+                            <div class="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 mt-1">
+                                <span class="font-mono text-xs sm:text-sm font-bold text-slate-800 flex-1 truncate px-1">19173</span>
+                                <button onclick="copyText('19173', 'Port Berhasil disalin!')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all shadow-sm">
+                                    Salin Port
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 2. SCOREBOARD / LEADERBOARD SECTION (Scroll ke bawah) -->
+            <!-- 2. SCOREBOARD SECTION -->
             <section id="leaderboard" class="px-4 sm:px-10 max-w-5xl mx-auto w-full space-y-6 pt-6">
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div>
@@ -137,7 +148,6 @@
                         <h2 class="text-3xl font-extrabold text-slate-900">Scoreboard</h2>
                     </div>
 
-                    <!-- Filter Buttons -->
                     <div class="flex gap-2 overflow-x-auto py-1">
                         <button onclick="switchLb('richest')" id="btn-richest" class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 shrink-0">
                             💰 Richest
@@ -151,9 +161,7 @@
                     </div>
                 </div>
 
-                <!-- Table Container -->
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <!-- Richest Table -->
                     <div id="table-richest" class="overflow-x-auto">
                         <table class="w-full text-left text-xs sm:text-sm">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
@@ -191,7 +199,6 @@
                         </table>
                     </div>
 
-                    <!-- Kills Table -->
                     <div id="table-kills" class="hidden overflow-x-auto">
                         <table class="w-full text-left text-xs sm:text-sm">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
@@ -222,7 +229,6 @@
                         </table>
                     </div>
 
-                    <!-- Playtime Table -->
                     <div id="table-playtime" class="hidden overflow-x-auto">
                         <table class="w-full text-left text-xs sm:text-sm">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
@@ -248,7 +254,7 @@
                 </div>
             </section>
 
-            <!-- 3. RANKS SECTION (Scroll kebawah setelah scoreboard) -->
+            <!-- 3. RANKS SECTION -->
             <section id="ranks" class="px-4 sm:px-10 max-w-5xl mx-auto w-full space-y-6 pt-6">
                 <div>
                     <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Harga & Benefit</span>
@@ -256,7 +262,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <!-- Member -->
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
@@ -279,7 +284,6 @@
                         </div>
                     </div>
 
-                    <!-- Scout -->
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
@@ -304,7 +308,6 @@
                         </div>
                     </div>
 
-                    <!-- Knight -->
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
@@ -329,7 +332,6 @@
                         </div>
                     </div>
 
-                    <!-- Baron -->
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
@@ -354,7 +356,6 @@
                         </div>
                     </div>
 
-                    <!-- King -->
                     <div class="bg-gradient-to-b from-amber-50 to-white rounded-2xl p-5 border-2 border-amber-400 flex flex-col justify-between space-y-6 shadow-md relative overflow-hidden md:col-span-2 lg:col-span-2">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
@@ -381,7 +382,7 @@
                 </div>
             </section>
 
-            <!-- 4. COMMUNITY / INFO SECTION -->
+            <!-- 4. COMMUNITY SECTION -->
             <section id="community" class="px-4 sm:px-10 max-w-5xl mx-auto w-full space-y-6 pt-6">
                 <div>
                     <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Detail Server</span>
@@ -447,9 +448,9 @@
             document.getElementById('btn-' + type).className = "bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 shrink-0";
         }
 
-        function copyIP(ip) {
-            navigator.clipboard.writeText(ip);
-            alert('IP Server berhasil disalin!');
+        function copyText(text, message) {
+            navigator.clipboard.writeText(text);
+            alert(message);
         }
     </script>
 </body>
