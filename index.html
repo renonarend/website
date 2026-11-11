@@ -23,6 +23,13 @@
             background-color: #f8fafc;
             color: #0f172a;
         }
+        /* Desain Background Glow Estetik Tipis */
+        .aesthetic-bg {
+            background-image: 
+                radial-gradient(at 10% 20%, rgba(16, 185, 129, 0.07) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(245, 158, 11, 0.04) 0px, transparent 50%);
+        }
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -36,10 +43,10 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row selection:bg-emerald-200 selection:text-emerald-900">
+<body class="min-h-screen flex flex-col md:flex-row selection:bg-emerald-200 selection:text-emerald-900 aesthetic-bg">
 
     <!-- MOBILE HEADER -->
-    <header class="md:hidden flex items-center justify-between px-4 h-16 bg-white border-b border-slate-200 sticky top-0 z-50">
+    <header class="md:hidden flex items-center justify-between px-4 h-16 bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
         <div class="flex items-center gap-2.5">
             <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center text-base shadow-md shadow-emerald-500/20">
                 V
@@ -54,7 +61,7 @@
     </header>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col justify-between">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col justify-between shadow-sm md:shadow-none">
         <div class="p-6 space-y-8">
             <div class="hidden md:flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center text-lg shadow-md shadow-emerald-500/20">
@@ -64,23 +71,23 @@
             </div>
 
             <nav class="space-y-1.5 font-semibold text-sm">
-                <a href="#about" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                <a href="#about" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-emerald-600 transition-colors">
                     🏠 Home & Info
                 </a>
-                <a href="#leaderboard" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                <a href="#leaderboard" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-emerald-600 transition-colors">
                     🏆 Scoreboard
                 </a>
-                <a href="#ranks" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                <a href="#ranks" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-emerald-600 transition-colors">
                     👑 Ranks & Tiers
                 </a>
-                <a href="#community" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
-                    💬 Komunitas
+                <a href="#community" onclick="closeMobileMenu()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-emerald-600 transition-colors">
+                    💬 FAQ & Komunitas
                 </a>
             </nav>
         </div>
 
         <div class="p-6 border-t border-slate-100">
-            <a href="https://discord.gg" target="_blank" class="flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-4 py-3 rounded-xl transition-all shadow-sm">
+            <a href="https://discord.gg/CnppvSDsW2" target="_blank" class="flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-4 py-3 rounded-xl transition-all shadow-sm">
                 Gabung Discord
             </a>
         </div>
@@ -96,7 +103,7 @@
 
             <!-- 1. HERO / HOME & INFO SECTION -->
             <section id="about" class="pt-12 sm:pt-16 px-4 sm:px-10 max-w-5xl mx-auto text-center space-y-6">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 text-emerald-800 text-xs font-bold border border-emerald-200">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 text-emerald-800 text-xs font-bold border border-emerald-200/60 shadow-xs">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     Survival Economy Java & Bedrock
                 </div>
@@ -110,7 +117,8 @@
                 </p>
 
                 <!-- IP & Port Card Box -->
-                <div class="max-w-md mx-auto bg-white p-5 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-4 text-left">
+                <div class="max-w-md mx-auto bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-4 text-left relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-blue-500 to-amber-400"></div>
                     <div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
                         <span>Server Connection</span>
                         <span id="player-count" class="text-emerald-600 font-semibold">12 Players Online</span>
@@ -152,19 +160,19 @@
                         <button onclick="switchLb('richest')" id="btn-richest" class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 shrink-0">
                             💰 Richest
                         </button>
-                        <button onclick="switchLb('kills')" id="btn-kills" class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0">
+                        <button onclick="switchLb('kills')" id="btn-kills" class="bg-white/90 border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0">
                             ⚔️ Top Kills
                         </button>
-                        <button onclick="switchLb('playtime')" id="btn-playtime" class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0">
+                        <button onclick="switchLb('playtime')" id="btn-playtime" class="bg-white/90 border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0">
                             ⏱️ Playtime
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div id="table-richest" class="overflow-x-auto">
                         <table class="w-full text-left text-xs sm:text-sm">
-                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                            <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
                                 <tr>
                                     <th class="p-4 w-12 text-center">#</th>
                                     <th class="p-4">PLAYER</th>
@@ -201,7 +209,7 @@
 
                     <div id="table-kills" class="hidden overflow-x-auto">
                         <table class="w-full text-left text-xs sm:text-sm">
-                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                            <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
                                 <tr>
                                     <th class="p-4 w-12 text-center">#</th>
                                     <th class="p-4">PLAYER</th>
@@ -231,7 +239,7 @@
 
                     <div id="table-playtime" class="hidden overflow-x-auto">
                         <table class="w-full text-left text-xs sm:text-sm">
-                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                            <thead class="bg-slate-50/80 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
                                 <tr>
                                     <th class="p-4 w-12 text-center">#</th>
                                     <th class="p-4">PLAYER</th>
@@ -262,7 +270,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-md">FREE</span>
@@ -284,7 +292,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-pink-600 bg-pink-100 px-2.5 py-1 rounded-md">Rp25.000</span>
@@ -308,7 +316,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2.5 py-1 rounded-md">Rp50.000</span>
@@ -332,7 +340,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition-all">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2.5 py-1 rounded-md">Rp75.000</span>
@@ -356,7 +364,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-gradient-to-b from-amber-50 to-white rounded-2xl p-5 border-2 border-amber-400 flex flex-col justify-between space-y-6 shadow-md relative overflow-hidden md:col-span-2 lg:col-span-2">
+                    <div class="bg-gradient-to-b from-amber-50 to-white/90 backdrop-blur-sm rounded-2xl p-5 border-2 border-amber-400 flex flex-col justify-between space-y-6 shadow-md relative overflow-hidden md:col-span-2 lg:col-span-2">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-amber-900 bg-amber-300 px-2.5 py-1 rounded-md">Rp100.000</span>
@@ -382,33 +390,25 @@
                 </div>
             </section>
 
-            <!-- 4. COMMUNITY SECTION -->
+            <!-- 4. FAQ & COMMUNITY SECTION -->
             <section id="community" class="px-4 sm:px-10 max-w-5xl mx-auto w-full space-y-6 pt-6">
                 <div>
-                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Detail Server</span>
-                    <h2 class="text-3xl font-extrabold text-slate-900">Komunitas & Info</h2>
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Bantuan & Informasi</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900">Frequently Asked Questions (FAQ)</h2>
                 </div>
 
-                <div class="bg-white rounded-2xl border border-slate-200 divide-y divide-slate-100 shadow-sm text-sm">
-                    <div class="p-4 sm:p-5 flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Java IP</span>
-                        <span class="font-mono font-bold text-slate-900">vworldmc.mc-world.xyz</span>
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200 divide-y divide-slate-100 shadow-sm text-sm">
+                    <div class="p-5 space-y-1.5">
+                        <h3 class="font-bold text-slate-900">Q: Bagaimana cara beli rank?</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm">A: Rank dapat dibeli melalui discord resmi <a href="https://discord.gg/CnppvSDsW2" target="_blank" class="text-emerald-600 font-semibold underline">disini</a>.</p>
                     </div>
-                    <div class="p-4 sm:p-5 flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Bedrock IP</span>
-                        <span class="font-mono font-bold text-slate-900">vworldmc.mc-world.xyz</span>
+                    <div class="p-5 space-y-1.5">
+                        <h3 class="font-bold text-slate-900">Q: Berapa jeda reset season?</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm">A: Server vworld tidak memakai reset season melainkan pajak ekonomi setiap bulan.</p>
                     </div>
-                    <div class="p-4 sm:p-5 flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Bedrock Port</span>
-                        <span class="font-mono font-bold text-slate-900">19173</span>
-                    </div>
-                    <div class="p-4 sm:p-5 flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Versi Game</span>
-                        <span class="font-semibold text-slate-800">1.21+ | 26.0+</span>
-                    </div>
-                    <div class="p-4 sm:p-5 flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Uptime Server</span>
-                        <span class="font-bold text-emerald-600">98% Online</span>
+                    <div class="p-5 space-y-1.5">
+                        <h3 class="font-bold text-slate-900">Q: Apakah ada cosmetics?</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm">A: Ya! Untuk melihat cosmetics silahkan cek di discord server.</p>
                     </div>
                 </div>
             </section>
@@ -416,7 +416,7 @@
         </main>
 
         <!-- FOOTER -->
-        <footer class="py-6 border-t border-slate-200 bg-white text-center text-xs text-slate-400">
+        <footer class="py-6 border-t border-slate-200 bg-white/60 backdrop-blur-sm text-center text-xs text-slate-400">
             &copy; 2026 VWORLD Minecraft Server. All rights reserved.
         </footer>
     </div>
@@ -441,7 +441,7 @@
             ['richest', 'kills', 'playtime'].forEach(t => {
                 document.getElementById('table-' + t).classList.add('hidden');
                 const btn = document.getElementById('btn-' + t);
-                btn.className = "bg-white border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0";
+                btn.className = "bg-white/90 border border-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shrink-0";
             });
 
             document.getElementById('table-' + type).classList.remove('hidden');
